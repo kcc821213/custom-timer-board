@@ -14,6 +14,9 @@ const durationInput = document.querySelector("#duration-input");
 const selectedMinutes = document.querySelector("#selected-minutes");
 const resetButton = document.querySelector("#reset-button");
 const resetDialog = document.querySelector("#reset-dialog");
+const proximityList = document.querySelector("#proximity-list");
+const proximityCount = document.querySelector("#proximity-count");
+const proximityEmpty = document.querySelector("#proximity-empty");
 
 const timeFormatter = new Intl.DateTimeFormat("en-US", {
   hour: "2-digit",
@@ -93,6 +96,7 @@ function createButtons() {
       <span class="timer-time"></span>
     `;
     button.addEventListener("click", () => recordTime(number));
+    button.addEventListener("contextmenu", (event) => cancelTimer(event, number));
     fragment.append(button);
   }
 
@@ -104,6 +108,67 @@ function recordTime(number) {
   records[number] = targetTime;
   saveRecords();
   renderRecords();
+}
+
+function cancelTimer(event, number) {
+  if (!records[number]) {
+    return;
+  }
+
+  event.preventDefault();
+  delete records[number];
+  saveRecords();
+  renderRecords();
+}
+
+function formatDistance(targetTime, now) {
+  const difference = targetTime - now;
+  const totalSeconds = Math.max(0, Math.floor(Math.abs(difference) / 1000));
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  const parts = [];
+
+  if (hours > 0) {
+    parts.push(`${hours}h`);
+  }
+  if (minutes > 0 || hours > 0) {
+    parts.push(`${minutes}m`);
+  }
+  parts.push(`${seconds}s`);
+
+  return `${difference <= 0 ? "Overdue" : "In"} ${parts.join(" ")}`;
+}
+
+function renderProximityList(now) {
+  const sortedRecords = Object.entries(records)
+    .filter(([, targetTime]) => Number.isFinite(targetTime))
+    .sort(([, firstTime], [, secondTime]) => {
+      const distanceDifference =
+        Math.abs(firstTime - now) - Math.abs(secondTime - now);
+      return distanceDifference || firstTime - secondTime;
+    });
+
+  proximityList.replaceChildren();
+  proximityCount.textContent = String(sortedRecords.length);
+  proximityEmpty.hidden = sortedRecords.length > 0;
+
+  const fragment = document.createDocumentFragment();
+
+  sortedRecords.forEach(([number, targetTime], index) => {
+    const item = document.createElement("li");
+    const isExpired = targetTime <= now;
+    item.className = `proximity-item${isExpired ? " expired" : ""}`;
+    item.innerHTML = `
+      <span class="proximity-rank">${index + 1}</span>
+      <span class="proximity-number">${number}</span>
+      <span class="proximity-distance">${formatDistance(targetTime, now)}</span>
+      <time datetime="${new Date(targetTime).toISOString()}">${timeFormatter.format(new Date(targetTime))}</time>
+    `;
+    fragment.append(item);
+  });
+
+  proximityList.append(fragment);
 }
 
 function renderRecords() {
@@ -145,6 +210,7 @@ function renderRecords() {
   });
 
   recordCount.textContent = String(count);
+  renderProximityList(now);
 }
 
 function updateClock() {

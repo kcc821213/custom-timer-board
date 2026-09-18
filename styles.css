@@ -187,6 +187,133 @@ h1 {
   gap: 12px;
 }
 
+.board-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  align-items: start;
+  gap: 18px;
+}
+
+.board-layout .button-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.proximity-panel {
+  position: sticky;
+  top: 18px;
+  max-height: calc(100vh - 36px);
+  overflow: hidden;
+  padding: 20px;
+  border: 1px solid #263251;
+  border-radius: 16px;
+  background: rgba(18, 26, 46, 0.92);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(12px);
+}
+
+.proximity-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.panel-eyebrow {
+  margin: 0 0 4px;
+  color: #7ea1ff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.proximity-heading h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.proximity-count {
+  display: grid;
+  min-width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 10px;
+  background: #233151;
+  color: #a9beff;
+  font-weight: 800;
+}
+
+.proximity-description {
+  margin: 10px 0 16px;
+  color: #8995b2;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.proximity-list {
+  display: grid;
+  max-height: calc(100vh - 190px);
+  margin: 0;
+  padding: 0 4px 0 0;
+  gap: 8px;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.proximity-item {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px 8px;
+  padding: 10px;
+  border: 1px solid rgba(57, 214, 180, 0.25);
+  border-radius: 11px;
+  background: #122c31;
+}
+
+.proximity-item.expired {
+  border-color: rgba(255, 177, 77, 0.32);
+  background: #2c241a;
+}
+
+.proximity-rank {
+  grid-row: 1 / span 2;
+  color: #697590;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.proximity-number {
+  font-weight: 800;
+}
+
+.proximity-distance {
+  color: #70e7ce;
+  font-size: 0.72rem;
+  text-align: right;
+}
+
+.proximity-item.expired .proximity-distance {
+  color: #ffc77e;
+}
+
+.proximity-item time {
+  grid-column: 2 / -1;
+  color: #818da8;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.7rem;
+}
+
+.proximity-empty {
+  margin: 0;
+  padding: 20px 10px;
+  border: 1px dashed #34415f;
+  border-radius: 11px;
+  color: #77839f;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
 .timer-button {
   position: relative;
   display: flex;
@@ -346,8 +473,23 @@ dialog p {
 }
 
 @media (max-width: 900px) {
-  .button-grid {
+  .board-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .board-layout .button-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .proximity-panel {
+    position: static;
+    grid-row: 1;
+    max-height: none;
+  }
+
+  .proximity-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-height: 320px;
   }
 }
 
@@ -382,9 +524,13 @@ dialog p {
     text-align: left;
   }
 
-  .button-grid {
+  .board-layout .button-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
+  }
+
+  .proximity-list {
+    grid-template-columns: 1fr;
   }
 
   .timer-button {
@@ -394,7 +540,7 @@ dialog p {
 }
 
 @media (max-width: 390px) {
-  .button-grid {
+  .board-layout .button-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

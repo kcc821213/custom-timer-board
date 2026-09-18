@@ -16,6 +16,7 @@
           <p class="description">
             Select a number to record the current time plus
             <strong id="selected-minutes">40</strong> minutes.
+            Right-click an active number to cancel it.
           </p>
         </div>
         <div class="clock" aria-live="polite">
@@ -52,7 +53,34 @@
         </div>
       </section>
 
-      <section id="button-grid" class="button-grid" aria-label="Numbered timer buttons"></section>
+      <div class="board-layout">
+        <section
+          id="button-grid"
+          class="button-grid"
+          aria-label="Numbered timer buttons"
+        ></section>
+
+        <aside class="proximity-panel" aria-labelledby="proximity-title">
+          <div class="proximity-heading">
+            <div>
+              <p class="panel-eyebrow">LIVE ORDER</p>
+              <h2 id="proximity-title">Nearest Timers</h2>
+            </div>
+            <span class="proximity-count" id="proximity-count">0</span>
+          </div>
+          <p class="proximity-description">
+            Recorded numbers, sorted from nearest to farthest.
+          </p>
+          <ol
+            id="proximity-list"
+            class="proximity-list"
+            aria-live="polite"
+          ></ol>
+          <p id="proximity-empty" class="proximity-empty">
+            Start a timer to see its position here.
+          </p>
+        </aside>
+      </div>
     </main>
 
     <dialog id="reset-dialog">
