@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#17223b" />
+    <title>Custom Timer Board</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">TIME TRACKER</p>
+          <h1>Custom Timer Board</h1>
+          <p class="description">
+            Select a number to record the current time plus
+            <strong id="selected-minutes">40</strong> minutes.
+          </p>
+        </div>
+        <div class="clock" aria-live="polite">
+          <span>Current Time</span>
+          <strong id="current-time">--:--:--</strong>
+          <small id="current-date">----</small>
+        </div>
+      </header>
+
+      <section class="toolbar" aria-label="Timer status">
+        <div class="status">
+          <span class="status-dot"></span>
+          <span>Recorded <strong id="record-count">0</strong> / 60</span>
+        </div>
+        <div class="toolbar-actions">
+          <label class="duration-setting" for="duration-input">
+            Duration
+            <span class="duration-control">
+              <input
+                id="duration-input"
+                type="number"
+                min="1"
+                max="1440"
+                step="1"
+                value="40"
+                inputmode="numeric"
+              />
+              <span>minutes</span>
+            </span>
+          </label>
+          <button id="reset-button" class="reset-button" type="button">
+            Reset All
+          </button>
+        </div>
+      </section>
+
+      <section id="button-grid" class="button-grid" aria-label="Numbered timer buttons"></section>
+    </main>
+
+    <dialog id="reset-dialog">
+      <form method="dialog">
+        <h2>Clear all records?</h2>
+        <p>This will clear all saved times for buttons 1–60.</p>
+        <div class="dialog-actions">
+          <button class="cancel-button" value="cancel">Cancel</button>
+          <button class="confirm-button" value="confirm">Reset All</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
