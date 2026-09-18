@@ -198,6 +198,11 @@ h1 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
+.timer-cell {
+  position: relative;
+  min-width: 0;
+}
+
 .proximity-panel {
   position: sticky;
   top: 18px;
@@ -317,6 +322,7 @@ h1 {
 .timer-button {
   position: relative;
   display: flex;
+  width: 100%;
   min-height: 112px;
   cursor: pointer;
   flex-direction: column;
@@ -336,6 +342,37 @@ h1 {
     box-shadow 160ms ease;
 }
 
+.timer-cancel-button {
+  position: absolute;
+  z-index: 2;
+  top: 9px;
+  right: 9px;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  background: rgba(8, 13, 26, 0.62);
+  color: #dbe2f5;
+  font-size: 1.25rem;
+  line-height: 1;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.timer-cancel-button:hover {
+  background: #e35e68;
+  color: #fff;
+}
+
+.timer-cancel-button[hidden] {
+  display: none;
+}
+
 .timer-button:hover {
   z-index: 1;
   border-color: #668eff;
@@ -344,6 +381,7 @@ h1 {
 }
 
 .timer-button:focus-visible,
+.timer-cancel-button:focus-visible,
 .reset-button:focus-visible,
 dialog button:focus-visible {
   outline: 3px solid rgba(126, 161, 255, 0.75);
@@ -374,7 +412,7 @@ dialog button:focus-visible {
 
 .timer-button.recorded::after {
   position: absolute;
-  top: 13px;
+  top: 46px;
   right: 13px;
   width: 7px;
   height: 7px;

@@ -86,6 +86,9 @@ function createButtons() {
   const fragment = document.createDocumentFragment();
 
   for (let number = 1; number <= BUTTON_COUNT; number += 1) {
+    const cell = document.createElement("div");
+    cell.className = "timer-cell";
+
     const button = document.createElement("button");
     button.type = "button";
     button.className = "timer-button";
@@ -97,7 +100,18 @@ function createButtons() {
     `;
     button.addEventListener("click", () => recordTime(number));
     button.addEventListener("contextmenu", (event) => cancelTimer(event, number));
-    fragment.append(button);
+
+    const cancelButton = document.createElement("button");
+    cancelButton.type = "button";
+    cancelButton.className = "timer-cancel-button";
+    cancelButton.dataset.number = String(number);
+    cancelButton.setAttribute("aria-label", `Cancel timer ${number}`);
+    cancelButton.textContent = "×";
+    cancelButton.hidden = true;
+    cancelButton.addEventListener("click", () => cancelTimer(null, number));
+
+    cell.append(button, cancelButton);
+    fragment.append(cell);
   }
 
   buttonGrid.append(fragment);
@@ -115,7 +129,7 @@ function cancelTimer(event, number) {
     return;
   }
 
-  event.preventDefault();
+  event?.preventDefault();
   delete records[number];
   saveRecords();
   renderRecords();
@@ -179,8 +193,12 @@ function renderRecords() {
     const targetTime = records[button.dataset.number];
     const label = button.querySelector(".timer-label");
     const time = button.querySelector(".timer-time");
+    const cancelButton = button.parentElement.querySelector(
+      ".timer-cancel-button",
+    );
 
     button.classList.remove("recorded", "urgent", "expired");
+    cancelButton.hidden = !targetTime;
 
     if (!targetTime) {
       label.textContent = "Click to start";
